@@ -1,30 +1,4 @@
-# servo-controller-ui
+# r7-ioserver-ui
+A modern web based user interface for interacting with the [r7-ioserver](https://github.com/kaliatech/r7-ioserver). Provides remote setup and configuration, servo calibration, and generic movement controls.  Uses [vuejs](https://vuejs.org/), [webpack](https://webpack.js.org/), [bootstrap 4](https://getbootstrap.com/), and [axios](https://github.com/axios/axios) for development.
 
-> Servo controller UI
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+This is submodule of the [r7 project](https://github.com/kaliatech/r7).

@@ -1,0 +1,40 @@
+@import '_variables.scss';
+//@import '~node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/izitoast/dist/css/iziToast';
+
+.loading-msg {
+  padding: 1em 0;
+}
+
+thead.nowrap {
+  th {
+    white-space: nowrap;
+  }
+}
+
+tbody.nowrap {
+  td {
+    white-space: nowrap;
+  }
+}
+
+table.tbl-list {
+  th {
+    padding: .25em 2em;
+  }
+
+  td {
+    padding: .25em 2em;
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+@include media-breakpoint-up(sm) {
+  .h-frm .col-form-label {
+    text-align: right;
+  }
+}

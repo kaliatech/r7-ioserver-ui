@@ -48,7 +48,8 @@ export default {
           name: 'Controllers',
           active: true
         })
-      } else if (path.startsWith('/controllers/')) {
+      }
+      else if (path.startsWith('/controllers/')) {
         this.crumbs.push({
           name: 'Controllers',
           url: '/controllers'
@@ -65,7 +66,8 @@ export default {
           name: 'Servos',
           active: true
         })
-      } else if (path.startsWith('/servos/')) {
+      }
+      else if (path.startsWith('/servos/')) {
         this.crumbs.push({
           name: 'Servos',
           url: '/servos'
@@ -78,7 +80,8 @@ export default {
           name: 'System - IO',
           active: true
         })
-      } else if (path.startsWith('/system/ioconns')) {
+      }
+      else if (path.startsWith('/system/ioconns')) {
         this.crumbs.push({
           name: 'System - IO Connections',
           url: '/system/ioconns'

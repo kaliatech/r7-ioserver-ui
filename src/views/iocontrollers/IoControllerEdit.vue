@@ -4,7 +4,8 @@
 
       <div class="row">
         <div class="col-md-12">
-          <h3 class="mb-4">Edit Controller<!-- <small>{{ioConn ? ioConn.id : this.$route.params.id}}</small> --></h3>
+          <h3 class="mb-4">Edit Controller
+            <small>{{ioConnEdit.id}}</small><!-- <small>{{ioConn ? ioConn.id : this.$route.params.id}}</small> --></h3>
         </div>
       </div>
       <div v-if="loading">
@@ -55,7 +56,8 @@
           <div class="form-group row">
             <label for="id" class="col-sm-2 col-xl-1 col-form-label">Port</label>
             <div class="col-sm-3">
-              <input class="form-control" id="connStr" placeholder="serial device path or port name">
+              <input class="form-control" id="connStr" v-model="ioConnEdit.connStr"
+                     placeholder="serial device path or port name">
             </div>
           </div>
 
@@ -89,7 +91,8 @@ export default {
       ioControllers: [],
       ioConn: null,
       ioConnEdit: {
-        id: ''
+        id: '',
+        connStr: ''
       },
       loading: true
     }
@@ -99,7 +102,7 @@ export default {
     this.load(this.$route.params.id)
   },
   methods: {
-    load (ioConnId) {
+    load: function (ioConnId) {
       this.loading = true
       this.$Progress.start()
 
@@ -107,8 +110,8 @@ export default {
         ioSrvr.getControllerTypes(),
         ioSrvr.getController(ioConnId)])
         .then((resps) => {
-          this.ioConn = resps[2]
-          if (this.ioConn) {
+          if (resps[2]) {
+            this.ioConn = resps[2]
             this.ioConnEdit = JSON.parse(JSON.stringify(this.ioConn))
           }
           this.$Progress.finish()
@@ -122,13 +125,32 @@ export default {
           this.loading = false
         })
     },
-    saveEdit () {
-      this.load(this.ioConn.id)
-      nSrvc.saved('Saved', 'Controller:' + this.ioConnEdit.id)
+    saveEdit: function () {
+      this.loading = true
+      this.$Progress.start()
+
+      ioSrvr.saveController(this.ioConn ? this.ioConn.id : '', this.ioConnEdit)
+        .then((savedIoConn) => {
+          this.ioConn = savedIoConn
+          nSrvc.saved('Saved', 'Controller:' + this.ioConnEdit.id)
+          this.$Progress.finish()
+          // this.load(this.ioConn.id)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     deleteController () {
-      nSrvc.deleted('Deleted', 'Controller:' + this.ioConnEdit.id)
-      this.$router.push('/controllers')
+      if (!this.ioConn) {
+        this.$router.push('/controllers')
+        return
+      }
+
+      ioSrvr.deleteController(this.ioConn ? this.ioConn.id : '')
+        .then(() => {
+          nSrvc.deleted('Deleted', 'Controller:' + this.ioConnEdit.id)
+          this.$router.push('/controllers')
+        })
     },
     cancelEdit: function () {
       this.$router.push('/controllers')

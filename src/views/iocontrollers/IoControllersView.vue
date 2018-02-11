@@ -58,6 +58,9 @@
 <script>
 import axios from 'axios'
 
+import ioSrvr from '@/shared/IoServerService'
+import nSrvc from '@/shared/NotificationService'
+
 export default {
   name: 'IoControllers',
   data () {
@@ -99,6 +102,13 @@ export default {
     },
     addDeviceController: function () {
       console.log('addDeviceController')
+    },
+    deleteIoConn (ioConn) {
+      ioSrvr.deleteController(this.ioConn ? this.ioConn.id : '')
+        .then((ioConns) => {
+          this.ioControllers = ioConns
+          nSrvc.deleted('Deleted', 'Controller:' + this.ioConnEdit.id)
+        })
     }
   }
 }

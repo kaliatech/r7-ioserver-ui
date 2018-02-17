@@ -60,7 +60,7 @@ export default {
         })
       }
 
-      // Servos
+      // ServosView
       if (path === '/servos') {
         this.crumbs.push({
           name: 'Servos',

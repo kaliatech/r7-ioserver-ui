@@ -14,6 +14,17 @@ class NotificationService {
     })
   }
 
+  errored (title, msg) {
+    iziToast.show({
+      color: 'red',
+      message: msg || '',
+      overlay: false,
+      position: 'topRight',
+      timeout: 2300,
+      title: title || ''
+    })
+  }
+
   deleted (title, msg) {
     iziToast.show({
       color: 'red',

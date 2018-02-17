@@ -53,7 +53,52 @@ class IoServerService {
         conns = conns.filter((it) => it.id !== ioConnId)
 
         return axios.post(IO_SERVER_URL + '/data/controllers', conns).then((resp) => {
-          return resp.data
+          return Promise.resolve(resp.data)
+        })
+      })
+  }
+
+  getServos () {
+    return axios.get(IO_SERVER_URL + '/data/servos')
+      .then((resp) => Promise.resolve(resp.data))
+  }
+
+  getServo (id) {
+    if (!id || id === 'new') {
+      return Promise.resolve(null)
+    }
+    return this.getServos().then((servos) => {
+      let servo = servos.find((it) => it.id === id)
+      return Promise.resolve(servo)
+    })
+  }
+
+  saveServo (origId, servo) {
+    return this.getServos()
+      .then((servos) => {
+        if (!origId) {
+          servos.push(servo)
+        }
+        else {
+          let existingServo = servos.find((it) => it.id === origId)
+          Object.assign(existingServo, servo)
+        }
+        return axios.post(IO_SERVER_URL + '/data/servos', servos).then((resp) => {
+          return resp.data.find((it) => it.id === servo.id)
+        })
+      })
+  }
+
+  deleteServo (servoId) {
+    return this.getServos()
+      .then((servos) => {
+        let existingServo = servos.find((it) => it.id === servoId)
+        if (!existingServo) {
+          return Promise.reject(new Error('Servo does not exist.'))
+        }
+        servos = servos.filter((it) => it.id !== servoId)
+        return axios.post(IO_SERVER_URL + '/data/servos', servos).then((resp) => {
+          return Promise.resolve(resp.data)
         })
       })
   }

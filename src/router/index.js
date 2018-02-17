@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import IoControllers from '@/views/iocontrollers/IoControllersView'
 import IoControllerEdit from '@/views/iocontrollers/IoControllerEdit'
+import ServosView from '@/views/servos/ServosView'
+import ServoEdit from '@/views/servos/ServoEdit'
 
 Vue.use(Router)
 
@@ -23,6 +25,16 @@ export default new Router({
       path: '/controllers/:id',
       name: 'IoControllerEdit',
       component: IoControllerEdit
+    },
+    {
+      path: '/servos',
+      name: 'ServosView',
+      component: ServosView
+    },
+    {
+      path: '/servos/:id',
+      name: 'ServoEdit',
+      component: ServoEdit
     }
   ]
 })

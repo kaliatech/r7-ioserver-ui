@@ -102,6 +102,12 @@ class IoServerService {
         })
       })
   }
+
+  moveByPulse (servoId, currPulse) {
+    console.log('moveByPulse', servoId, currPulse)
+    // return Promise.resolve(true)
+    return axios.post(IO_SERVER_URL + '/mbp/', {s: servoId, p: currPulse})
+  }
 }
 
 export default new IoServerService()

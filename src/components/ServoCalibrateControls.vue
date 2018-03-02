@@ -186,6 +186,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.currPulseBeingSent = null
           nSrvc.errored('Error', 'Network error sending movement commands. Msg: ' + err.message)
         })
     }

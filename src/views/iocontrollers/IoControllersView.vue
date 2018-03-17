@@ -104,10 +104,10 @@ export default {
       console.log('addDeviceController')
     },
     deleteIoConn (ioConn) {
-      ioSrvr.deleteController(this.ioConn ? this.ioConn.id : '')
-        .then((ioConns) => {
-          this.ioControllers = ioConns
-          nSrvc.deleted('Deleted', 'Controller:' + this.ioConnEdit.id)
+      ioSrvr.deleteController(ioConn.id)
+        .then(() => {
+          nSrvc.deleted('Deleted', 'Controller:' + ioConn.id)
+          this.load()
         })
     }
   }

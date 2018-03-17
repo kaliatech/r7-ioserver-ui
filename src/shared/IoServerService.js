@@ -12,50 +12,70 @@ class IoServerService {
     if (!id || id === 'new') {
       return Promise.resolve(null)
     }
-    return this.getControllers().then((controllers) => {
-      let ioConn = controllers.find((it) => it.id === id)
-      return Promise.resolve(ioConn)
-    })
+    // return this.getControllers().then((controllers) => {
+    //   let ioConn = controllers.find((it) => it.id === id)
+    //   return Promise.resolve(ioConn)
+    // })
+    return axios.get(IO_SERVER_URL + '/data/controllers/' + id)
+      .then((resp) => {
+        return resp.data
+      })
   }
 
   getControllerTypes () {
-    return axios.get(IO_SERVER_URL + '/data/ref-controller-types')
+    return axios.get(IO_SERVER_URL + '/data/controller_types')
+      .then((resp) => {
+        return resp.data
+      })
   }
 
   getIoConnectionTypes () {
-    return axios.get(IO_SERVER_URL + '/data/ref-ioconnection-types')
+    return axios.get(IO_SERVER_URL + '/data/ioconnection_types')
+      .then((resp) => {
+        return resp.data
+      })
   }
 
   saveController (origId, ioConn) {
-    return this.getControllers()
-      .then((conns) => {
-        if (!origId) {
-          conns.push(ioConn)
-        }
-        else {
-          let existingIoConn = conns.find((it) => it.id === origId)
-          Object.assign(existingIoConn, ioConn)
-        }
-        return axios.post(IO_SERVER_URL + '/data/controllers', conns).then((resp) => {
-          return resp.data.find((it) => it.id === ioConn.id)
-        })
-      })
+    // return this.getControllers()
+    //   .then((conns) => {
+    //     if (!origId) {
+    //       conns.push(ioConn)
+    //     }
+    //     else {
+    //       let existingIoConn = conns.find((it) => it.id === origId)
+    //       Object.assign(existingIoConn, ioConn)
+    //     }
+    //    return axios.post(IO_SERVER_URL + '/data/controllers', ioConn).then((resp) => {
+    //      return resp.data.find((it) => it.id === ioConn.id)
+    //    })
+    //  })
+    let url = IO_SERVER_URL + '/data/controllers'
+    if (origId) {
+      url += '/' + origId
+    }
+    return axios.post(url, ioConn).then((resp) => {
+      return resp.data
+    })
   }
 
   deleteController (ioConnId) {
-    return this.getControllers()
-      .then((conns) => {
-        let existingIoConn = conns.find((it) => it.id === ioConnId)
-        if (!existingIoConn) {
-          return Promise.resolve(false)
-        }
-
-        conns = conns.filter((it) => it.id !== ioConnId)
-
-        return axios.post(IO_SERVER_URL + '/data/controllers', conns).then((resp) => {
-          return Promise.resolve(resp.data)
-        })
-      })
+    // return this.getControllers()
+    //   .then((conns) => {
+    //     let existingIoConn = conns.find((it) => it.id === ioConnId)
+    //     if (!existingIoConn) {
+    //       return Promise.resolve(false)
+    //     }
+    //
+    //     conns = conns.filter((it) => it.id !== ioConnId)
+    //
+    //     return axios.post(IO_SERVER_URL + '/data/controllers', conns).then((resp) => {
+    //       return Promise.resolve(resp.data)
+    //     })
+    //   })
+    return axios.delete(IO_SERVER_URL + '/data/controllers/' + ioConnId).then((resp) => {
+      return resp.data
+    })
   }
 
   getServos () {

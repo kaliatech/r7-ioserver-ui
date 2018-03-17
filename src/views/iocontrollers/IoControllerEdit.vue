@@ -116,14 +116,13 @@ export default {
             this.ioConnEdit = JSON.parse(JSON.stringify(this.ioConn))
           }
           this.$Progress.finish()
+          this.loading = false
         })
         .catch((error) => {
           this.$Progress.fail()
-          document.querySelector('.loading-msg').innerHTML = 'Unable to load controllers. ' + error
+          nSrvc.errored('Error', `Unable to load controller: ${ioConnId}. Message: ${error.message}`, false)
         })
         .finally(() => {
-          console.log('finally')
-          this.loading = false
         })
     },
     saveEdit: function () {
@@ -138,10 +137,20 @@ export default {
 
       ioSrvr.saveController(this.ioConn ? this.ioConn.id : '', this.ioConnEdit)
         .then((savedIoConn) => {
+          let origId = this.ioConn ? this.ioConn.id : ''
           this.ioConn = savedIoConn
+
+          if (origId !== this.ioConn.id) {
+            this.$router.replace('/controllers/' + this.ioConn.id)
+          }
+          this.load(this.ioConn.id)
+
           nSrvc.saved('Saved', 'Controller:' + this.ioConnEdit.id)
           this.$Progress.finish()
-          // this.load(this.ioConn.id)
+        })
+        .catch((error) => {
+          this.$Progress.fail()
+          nSrvc.errored('Error', `Unable to save controller: ${this.ioConnEdit.id}. Message: ${error.message}`, false)
         })
         .finally(() => {
           this.loading = false
@@ -155,7 +164,7 @@ export default {
 
       ioSrvr.deleteController(this.ioConn ? this.ioConn.id : '')
         .then(() => {
-          nSrvc.deleted('Deleted', 'Controller:' + this.ioConnEdit.id)
+          nSrvc.deleted('Deleted', 'Controller:' + this.ioConn.id)
           this.$router.push('/controllers')
         })
     },

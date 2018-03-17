@@ -14,13 +14,13 @@ class NotificationService {
     })
   }
 
-  errored (title, msg) {
+  errored (title, msg, autoClose = true) {
     iziToast.show({
       color: 'red',
       message: msg || '',
       overlay: false,
       position: 'topRight',
-      timeout: 2300,
+      timeout: autoClose === true ? 2300 : null,
       title: title || ''
     })
   }

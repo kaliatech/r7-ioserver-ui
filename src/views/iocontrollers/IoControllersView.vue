@@ -32,9 +32,9 @@
                 <td>
                   <router-link :to="'/controllers/'+ioConn.id"><strong>{{ ioConn.id }}</strong></router-link>
                 </td>
-                <td>{{ioConn.type}}</td>
-                <td>{{ioConn.connType}}</td>
-                <td>{{ioConn.connStr}}</td>
+                <td>{{ioConn.controllerTypeId}}</td>
+                <td>{{ioConn.ioConnTypeId}}</td>
+                <td>{{ioConn.ioConnStr}}</td>
                 <td>
                   <!--
                   <button type="button" class="btn btn-link btn-sm" @click="showIoConnModal(ioConn)">

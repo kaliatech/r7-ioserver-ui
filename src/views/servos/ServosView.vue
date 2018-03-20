@@ -52,7 +52,7 @@
                   </b-button>
                 </td>
                 <td>
-                  {{ servo.ioControllerId }}
+                  {{ servo.controllerId }}
                 </td>
                 <td>
                   {{ servo.pin }}
@@ -128,9 +128,8 @@ export default {
     },
     deleteServo (servo) {
       ioSrvr.deleteServo(servo.id)
-        .then((servos) => {
-          this.servos = servos
-          nSrvc.deleted('Deleted', 'Servo:' + servo.id)
+        .then(() => {
+          this.load()
         })
         .catch((error) => {
           console.log('error', error)

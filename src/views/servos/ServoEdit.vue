@@ -45,7 +45,7 @@
             <div class="row">
               <legend class="col-form-label col-sm-2 col-xl-1 pt-0">Controller</legend>
               <div class="col-sm-3">
-                <b-form-select v-model="servoFbo.ioControllerId" :options="ioControllersForSelect" class="mb-3"/>
+                <b-form-select v-model="servoFbo.controllerId" :options="ioControllersForSelect" class="mb-3"/>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
           <div class="form-group row">
             <label for="id" class="col-sm-2 col-xl-1 col-form-label">Pin</label>
             <div class="col-sm-3">
-              <input class="form-control" id="pin" v-model="servoFbo.pin"
+              <input class="form-control" id="pin" type="number" v-model.number="servoFbo.pin"
                      placeholder="controller pin">
             </div>
           </div>
@@ -139,7 +139,8 @@ export default {
       servo: null,
       servoFbo: {
         id: '',
-        pin: '',
+        controllerId: '',
+        pin: -1,
         initPulse: 1500,
         startPulse: 500,
         startDeg: 0,

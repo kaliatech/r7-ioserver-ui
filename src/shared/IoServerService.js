@@ -80,47 +80,35 @@ class IoServerService {
 
   getServos () {
     return axios.get(IO_SERVER_URL + '/data/servos')
-      .then((resp) => Promise.resolve(resp.data))
+      .then((resp) => {
+        return resp.data
+      })
   }
 
   getServo (id) {
     if (!id || id === 'new') {
       return Promise.resolve(null)
     }
-    return this.getServos().then((servos) => {
-      let servo = servos.find((it) => it.id === id)
-      return Promise.resolve(servo)
-    })
+    return axios.get(IO_SERVER_URL + '/data/servos/' + id)
+      .then((resp) => {
+        return resp.data
+      })
   }
 
   saveServo (origId, servo) {
-    return this.getServos()
-      .then((servos) => {
-        if (!origId) {
-          servos.push(servo)
-        }
-        else {
-          let existingServo = servos.find((it) => it.id === origId)
-          Object.assign(existingServo, servo)
-        }
-        return axios.post(IO_SERVER_URL + '/data/servos', servos).then((resp) => {
-          return resp.data.find((it) => it.id === servo.id)
-        })
-      })
+    let url = IO_SERVER_URL + '/data/servos'
+    if (origId) {
+      url += '/' + origId
+    }
+    return axios.post(url, servo).then((resp) => {
+      return resp.data
+    })
   }
 
   deleteServo (servoId) {
-    return this.getServos()
-      .then((servos) => {
-        let existingServo = servos.find((it) => it.id === servoId)
-        if (!existingServo) {
-          return Promise.reject(new Error('Servo does not exist.'))
-        }
-        servos = servos.filter((it) => it.id !== servoId)
-        return axios.post(IO_SERVER_URL + '/data/servos', servos).then((resp) => {
-          return Promise.resolve(resp.data)
-        })
-      })
+    return axios.delete(IO_SERVER_URL + '/data/servos/' + servoId).then((resp) => {
+      return resp.data
+    })
   }
 
   moveByPulse (servoId, currPulse) {

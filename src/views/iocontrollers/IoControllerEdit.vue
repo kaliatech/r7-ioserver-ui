@@ -5,7 +5,8 @@
       <div class="row">
         <div class="col-md-12">
           <h3 class="mb-4">Edit Controller
-            <small>{{ioConnEdit.id}}</small><!-- <small>{{ioConn ? ioConn.id : this.$route.params.id}}</small> --></h3>
+            <small>{{ioControllerEdit.id}}</small>
+            <!-- <small>{{ioConn ? ioController.id : this.$route.params.id}}</small> --></h3>
         </div>
       </div>
       <div v-if="loading">
@@ -20,19 +21,21 @@
                      id="id"
                      placeholder="required"
                      required
-                     v-model="ioConnEdit.id">
+                     v-model="ioControllerEdit.id">
             </div>
           </div>
 
           <fieldset class="form-group">
             <div class="row">
-              <legend class="col-form-label col-sm-2 col-xl-1 pt-0">Device</legend>
+              <legend class="col-form-label col-sm-2 col-xl-1 pt-0">Type</legend>
               <div class="col-sm-10">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="deviceType" id="deviceType"
-                         value="pololu-maestro-8" checked>
-                  <label class="form-check-label" for="deviceType">
-                    pololu-maestro-8
+                <div class="form-check" v-for="type in controllerTypes" :key="type.id">
+                  <input :id="type.id" :value="type.id" v-model="ioControllerEdit.controllerTypeId"
+                         name="controllerTypeId"
+                         type="radio"
+                         class="form-check-input"/>
+                  <label class="form-check-label" :for="type.id">
+                    {{ type.id }}
                   </label>
                 </div>
               </div>
@@ -43,11 +46,13 @@
             <div class="row">
               <legend class="col-form-label col-sm-2 col-xl-1 pt-0">Connection</legend>
               <div class="col-sm-10">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="connType" id="connType" value="asio-serial"
-                         checked>
-                  <label class="form-check-label" for="connType">
-                    asio-serial
+                <div class="form-check" v-for="type in ioConnTypes" :key="type.id">
+                  <input :id="type.id" :value="type.id" v-model="ioControllerEdit.ioConnTypeId"
+                         name="ioConnTypeId"
+                         type="radio"
+                         class="form-check-input"/>
+                  <label class="form-check-label" :for="type.id">
+                    {{ type.id }}
                   </label>
                 </div>
               </div>
@@ -57,7 +62,7 @@
           <div class="form-group row">
             <label for="id" class="col-sm-2 col-xl-1 col-form-label">Port</label>
             <div class="col-sm-3">
-              <input class="form-control" id="connStr" v-model="ioConnEdit.connStr"
+              <input class="form-control" id="connStr" v-model="ioControllerEdit.ioConnStr"
                      placeholder="serial device path or port name">
             </div>
           </div>
@@ -89,11 +94,15 @@ export default {
   name: 'IoControllerEdit',
   data () {
     return {
+      controllerTypes: [],
+      ioConnTypes: [],
       ioControllers: [],
-      ioConn: null,
-      ioConnEdit: {
+      ioController: null,
+      ioControllerEdit: {
         id: '',
-        connStr: ''
+        controllerTypeId: 'pololu-maestro',
+        ioConnTypeId: 'serial-asio',
+        ioConnStr: ''
       },
       loading: true
     }
@@ -111,9 +120,11 @@ export default {
         ioSrvr.getControllerTypes(),
         ioSrvr.getController(ioConnId)])
         .then((resps) => {
-          if (resps[2]) {
-            this.ioConn = resps[2]
-            this.ioConnEdit = JSON.parse(JSON.stringify(this.ioConn))
+          this.ioConnTypes = resps[0]
+          this.controllerTypes = resps[1]
+          this.ioController = resps[2]
+          if (this.ioController) {
+            this.ioControllerEdit = JSON.parse(JSON.stringify(this.ioController))
           }
           this.$Progress.finish()
           this.loading = false
@@ -135,36 +146,36 @@ export default {
       this.loading = true
       this.$Progress.start()
 
-      ioSrvr.saveController(this.ioConn ? this.ioConn.id : '', this.ioConnEdit)
+      ioSrvr.saveController(this.ioConn ? this.ioController.id : '', this.ioControllerEdit)
         .then((savedIoConn) => {
-          let origId = this.ioConn ? this.ioConn.id : ''
-          this.ioConn = savedIoConn
+          let origId = this.ioController ? this.ioController.id : ''
+          this.ioController = savedIoConn
 
-          if (origId !== this.ioConn.id) {
-            this.$router.replace('/controllers/' + this.ioConn.id)
+          if (origId !== this.ioController.id) {
+            this.$router.replace('/controllers/' + this.ioController.id)
           }
-          this.load(this.ioConn.id)
+          this.load(this.ioController.id)
 
-          nSrvc.saved('Saved', 'Controller:' + this.ioConnEdit.id)
+          nSrvc.saved('Saved', 'Controller:' + this.ioControllerEdit.id)
           this.$Progress.finish()
         })
         .catch((error) => {
           this.$Progress.fail()
-          nSrvc.errored('Error', `Unable to save controller: ${this.ioConnEdit.id}. Message: ${error.message}`, false)
+          nSrvc.errored('Error', `Unable to save controller: ${this.ioControllerEdit.id}. Message: ${error.message}`)
         })
         .finally(() => {
           this.loading = false
         })
     },
     deleteController () {
-      if (!this.ioConn) {
+      if (!this.ioController) {
         this.$router.push('/controllers')
         return
       }
 
-      ioSrvr.deleteController(this.ioConn ? this.ioConn.id : '')
+      ioSrvr.deleteController(this.ioController ? this.ioController.id : '')
         .then(() => {
-          nSrvc.deleted('Deleted', 'Controller:' + this.ioConn.id)
+          nSrvc.deleted('Deleted', 'Controller:' + this.ioController.id)
           this.$router.push('/controllers')
         })
     },

@@ -151,10 +151,10 @@ export default {
     servo (newServo, oldServo) {
       if (newServo) {
         this.servoFbo = JSON.parse(JSON.stringify(this.servo))
-        this.sliderVal = newServo.initPulse
+        this.sliderVal = this.currPulse
       }
     },
-    currPulse () {
+    currPulse (newVal, oldVal) {
       this.nextPulseToSend = this.currPulse
       if (this.isLive) {
         if (this.currPulseBeingSent == null) {

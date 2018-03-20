@@ -20,7 +20,7 @@ class NotificationService {
       message: msg || '',
       overlay: false,
       position: 'topRight',
-      timeout: autoClose === true ? 2300 : null,
+      timeout: autoClose === true ? 5000 : null,
       title: title || ''
     })
   }

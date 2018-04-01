@@ -56,8 +56,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-
 import ioSrvr from '@/shared/IoServerService'
 import nSrvc from '@/shared/NotificationService'
 
@@ -87,11 +85,9 @@ export default {
   methods: {
     load () {
       this.$Progress.start()
-      axios.get('http://localhost:12080/data/controllers')
-        .then((resp) => {
-          // console.log(response.data)
-          // console.log(response.status)
-          this.ioControllers = resp.data
+      ioSrvr.getControllers()
+        .then((controllers) => {
+          this.ioControllers = controllers
           this.loading = false
           this.$Progress.finish()
         })

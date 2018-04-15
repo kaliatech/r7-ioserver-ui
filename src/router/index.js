@@ -9,7 +9,7 @@ import ServoEdit from '@/views/servos/ServoEdit'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',

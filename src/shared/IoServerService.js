@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const IO_SERVER_URL = 'http://localhost:12080'
+// const IO_SERVER_URL = 'http://localhost:12080'
+const IO_SERVER_URL = ''
 
 class IoServerService {
   getControllers () {

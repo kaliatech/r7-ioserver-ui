@@ -6,6 +6,8 @@ import IoControllerEdit from '@/views/iocontrollers/IoControllerEdit'
 import ServosView from '@/views/servos/ServosView'
 import ServoEdit from '@/views/servos/ServoEdit'
 
+import MotionView from '@/views/motion/MotionView'
+
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +37,11 @@ export default new Router({
       path: '/servos/:id',
       name: 'ServoEdit',
       component: ServoEdit
+    },
+    {
+      path: '/motion',
+      name: 'MotionView',
+      component: MotionView
     }
   ]
 })

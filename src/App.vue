@@ -15,7 +15,7 @@
         <b-navbar-nav>
           <b-nav-item to="/controllers">Controllers</b-nav-item>
           <b-nav-item to="/servos" href="#">Servos</b-nav-item>
-          <b-nav-item href="#">Motion</b-nav-item>
+          <b-nav-item to="/motion">Motion</b-nav-item>
           <b-nav-item href="#">Settings</b-nav-item>
         </b-navbar-nav>
         <!--

@@ -69,6 +69,8 @@
 <script>
 import MainBreadCrumb from '@/components/MainBreadcrumb'
 
+import '../node_modules/izitoast/dist/css/iziToast.css'
+
 export default {
   components: {'main-breadcrumb': MainBreadCrumb},
   data: function () {

@@ -1,13 +1,12 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+
 import BootstrapVue from 'bootstrap-vue'
 import VueProgressBar from 'vue-progressbar'
 
-import App from './App'
+import App from './App.vue'
 
-import store from '@/store'
 import router from './router'
+import store from './store'
 
 // https://github.com/FortAwesome/vue-fontawesome
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -26,7 +25,6 @@ import faPlusSquare from '@fortawesome/fontawesome-free-solid/faPlusSquare'
 import faTrashAlt from '@fortawesome/fontawesome-free-solid/faTrashAlt'
 
 import promiseFinally from 'promise.prototype.finally'
-
 promiseFinally.shim()
 
 fontawesome.library.add(faChevronUp)
@@ -49,11 +47,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
   components: {App, FontAwesomeIcon},
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount('#app')

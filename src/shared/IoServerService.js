@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const IO_SERVER_URL = 'http://localhost:12080'
+
 // const IO_SERVER_URL = ''
 
 class IoServerService {
@@ -75,6 +76,29 @@ class IoServerService {
     //     })
     //   })
     return axios.delete(IO_SERVER_URL + '/data/controllers/' + ioConnId).then((resp) => {
+      return resp.data
+    })
+  }
+
+  getSequences () {
+    return axios.get(IO_SERVER_URL + '/data/sequences')
+      .then((resp) => {
+        return resp.data
+      })
+  }
+
+  saveSequence (origId, seq) {
+    let url = IO_SERVER_URL + '/data/sequences'
+    if (origId) {
+      url += '/' + origId
+    }
+    return axios.post(url, seq).then((resp) => {
+      return resp.data
+    })
+  }
+
+  deleteSequence (seqId) {
+    return axios.delete(IO_SERVER_URL + '/data/sequences/' + seqId).then((resp) => {
       return resp.data
     })
   }

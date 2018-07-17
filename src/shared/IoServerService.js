@@ -97,6 +97,13 @@ class IoServerService {
     })
   }
 
+  playSequence (seqId, speed) {
+    let url = IO_SERVER_URL + '/seq/' + seqId + '/play'
+    return axios.post(url, {speed: speed}).then((resp) => {
+      return resp.data
+    })
+  }
+
   deleteSequence (seqId) {
     return axios.delete(IO_SERVER_URL + '/data/sequences/' + seqId).then((resp) => {
       return resp.data

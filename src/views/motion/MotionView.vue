@@ -42,7 +42,7 @@
               <b-btn variant="outline-primary">
                 <font-awesome-icon icon="stop"/>
               </b-btn>
-              <b-btn variant="outline-primary">
+              <b-btn variant="outline-primary" @click="playSequence">
                 <font-awesome-icon icon="play"/>
               </b-btn>
 
@@ -126,7 +126,7 @@
             <tbody v-if="currSequence" class="nowrap">
             <tr :key="action.time + '-' + action.servoId" v-for="(action, idx) in currSequence.actions">
               <td>
-                <b-form-input v-model="action.time" @input="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.time" @input="onActionChange"></b-form-input>
               </td>
               <td>
                 <b-form-select v-model="action.servoId"
@@ -137,20 +137,20 @@
                                @change="onActionChange"/>
               </td>
               <td>
-                <b-form-input v-model="action.target" @change="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.target" @change="onActionChange"></b-form-input>
               </td>
               <td>
-                <b-form-input v-model="action.duration" @change="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.duration" @change="onActionChange"></b-form-input>
               </td>
               <td><p>or</p></td>
               <td>
-                <b-form-input v-model="action.speed" @change="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.speed" @change="onActionChange"></b-form-input>
               </td>
               <td>
-                <b-form-input v-model="action.accel" @change="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.accel" @change="onActionChange"></b-form-input>
               </td>
               <td>
-                <b-form-input v-model="action.deaccel" @change="onActionChange"></b-form-input>
+                <b-form-input v-model.number="action.deaccel" @change="onActionChange"></b-form-input>
               </td>
               <td>
                 <b-btn style="width:5em" size="sm" class="sm-row">Move</b-btn>
@@ -320,6 +320,9 @@ export default {
           console.log('Error', err)
           this.$Progress.fail()
         })
+    },
+    playSequence () {
+      ioSrvr.playSequence(this.currSequence.id, this.speed)
     },
     showNewSequenceModal () {
       this.showSequenceNameModal = true
